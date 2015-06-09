@@ -1945,7 +1945,7 @@ do_analyse(_Module, Analysis, clause, Clauses) ->
 					   clause=C},'_'},
 			  case ets:match_object(?COLLECTION_TABLE, Pattern) of
 			  	[] -> 
-			  		exit(ok);
+			  		init:stop();
 			  	Bumps -> 
 			  		{_Bump, Calls} = hd(lists:keysort(1, Bumps)),
 			  		{{M,F,A,C}, Calls}
