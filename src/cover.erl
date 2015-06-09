@@ -1943,9 +1943,13 @@ do_analyse(_Module, Analysis, clause, Clauses) ->
 		  fun({M,F,A,C,_Ls}) ->
 			  Pattern = {#bump{module=M,function=F,arity=A,
 					   clause=C},'_'},
-			  Bumps = ets:match_object(?COLLECTION_TABLE, Pattern),
-			  {_Bump, Calls} = hd(lists:keysort(1, Bumps)),
-			  {{M,F,A,C}, Calls}
+			  case ets:match_object(?COLLECTION_TABLE, Pattern) of
+			  	[] -> 
+			  		exit(ok);
+			  	Bumps -> 
+			  		{_Bump, Calls} = hd(lists:keysort(1, Bumps)),
+			  		{{M,F,A,C}, Calls}
+			  end
 		  end
 	  end,
     Answer = lists:map(Fun, Clauses),
